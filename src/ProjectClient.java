@@ -1,32 +1,35 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
-public class ProjectClient {
-	
-	public static void main(String[] args) {
-		String hostName = "127.0.0.1";
-		int portNumber = 8088;
-		Socket clientSocket;
-		PrintWriter out;
-		BufferedReader in;
-		InputStreamReader ir;
-		
-		try {
-			clientSocket = new Socket(hostName, portNumber);
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			ir = new InputStreamReader(clientSocket.getInputStream());
-			in = new BufferedReader(ir);
-			out.println("initCalculation");
-			System.out.println("Server says: " + in.readLine());
-		} catch(UnknownHostException e) {
-			System.exit(1);			
-		} catch(IOException e) {
-			System.exit(1);		
-		}
-		
+public class ProjectClient extends Thread{
+	private BufferedReader in;
+	private PrintStream out;
+	private Socket sock;
+	private String Msg;
+	public ProjectClient(String ip, int portNum, String Msg) throws UnknownHostException, IOException {
+		this.sock = new Socket(ip, portNum);
+		this.Msg = Msg;
 	}
+	
+	@Override
+	public void run()
+	{
+		try {
+			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			out = new PrintStream(sock.getOutputStream());
+			out.print(Msg);
+			String InMsg = in.readLine();
+			
+			System.out.println(InMsg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

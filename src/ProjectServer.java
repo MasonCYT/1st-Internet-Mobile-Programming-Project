@@ -1,11 +1,24 @@
+import java.io.IOException;
+import java.net.ServerSocket;
 
-public class ProjectServer {
+public class ProjectServer extends Thread{
 
-	public static void main(String[] args) {
-		
-		System.out.println("Hello Server!");
-		SocketServer s = new SocketServer();
-		s.runServer();
+	ServerSocket s1;
+	Host hs;
+	
+	public ProjectServer(int portNum,Host hs) throws IOException
+	{
+		this.s1 = new ServerSocket(portNum);
+		this.hs = hs;
+	}
+	
+	public void run() {
+		try {
+			SocketServer ss = new SocketServer(s1.accept(),hs);
+			ss.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
