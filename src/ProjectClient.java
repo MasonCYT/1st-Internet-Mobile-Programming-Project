@@ -23,7 +23,7 @@ public class ProjectClient extends Thread{
 		try {
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintStream(sock.getOutputStream());
-			out.print(Msg);
+			out.println(Msg);
 			String InMsg = in.readLine();
 			
 			System.out.println(InMsg);

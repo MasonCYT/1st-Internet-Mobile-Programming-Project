@@ -19,25 +19,17 @@ public class SocketServer extends Thread{
 	
 	
 	
-	public void runServer() {
+	public void run() {
 		try {
 			this.out = new PrintWriter(s.getOutputStream(), true);
 			this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			
-			String lineIn = in.readLine();
+			String lineIn;
+			lineIn = in.readLine();
+		
 			hs.receiveMsg(lineIn);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
-//		while(true) {
-//			try {
-//				Socket clientSocket = serverSocket.accept();
-//				ProjectRunnable r = new ProjectRunnable(clientSocket);
-//				new Thread(r).start();
-//			} catch(IOException e){
-//				System.out.println(e.getMessage());
-//			}
-//		}
 	}
 }
